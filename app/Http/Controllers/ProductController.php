@@ -26,8 +26,12 @@ class ProductController extends Controller
             $ori_filename = $file->getClientOriginalName();
             $fileName = $file->hashName();
             $file->move(public_path(ProductFile::FILEPATH), $fileName);
-            
             $file_path = ProductFile::FILEPATH.$fileName;
+            
+            $existed = ProductFile::where('filename', $ori_filename)->get()->first();
+            if(!empty($existed) && file_exists($existed->filepath)){
+                unlink($existed->filepath);
+            }
             
             ProductFile::updateOrCreate([
                 'filename' => $ori_filename,
@@ -61,7 +65,9 @@ class ProductController extends Controller
         $id = $request->id;
         $result = ProductFile::where('id', $id)->get()->first();
         if(!empty($result)){
-            unlink($result->filepath);
+            if(file_exists($result->filepath)){
+                unlink($result->filepath);
+            }
             ProductFile::where('id', $id)->delete();
             ProductDetail::where('product_file_id', $id)->delete();
             return redirect(route('product.index'))->with('success', 'Deleted successfully!');

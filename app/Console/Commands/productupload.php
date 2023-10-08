@@ -44,9 +44,9 @@ class productupload extends Command
         $results = ProductFile::where('status', ProductFile::STATUS_PENDING)->get()->all();
         if(!empty($results)){
             foreach($results as $result){
-//                ProductFile::where('id', $result->id)->update([
-//                    'status' => ProductFile::STATUS_PROCESSING
-//                ]);
+                ProductFile::where('id', $result->id)->update([
+                    'status' => ProductFile::STATUS_PROCESSING
+                ]);
                 
                 try{
                     DB::beginTransaction();

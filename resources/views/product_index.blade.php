@@ -20,7 +20,7 @@
     LOADING... Wait a moment...
 </div>
 <br/>
-
+<h3 class="text-danger">Use the same "File Name" to update the list!</h3>
 @if (session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{ session('error') }}</strong>
@@ -60,7 +60,9 @@
             </td>
             <td>
                 <a href="{{ route('product.detail', ['id' => $result->id]) }}" class="btn btn-primary">View</a>
+                @if($result->status != 'Processing')
                 <a href="{{ route('product.delete', ['id' => $result->id]) }}" class="btn btn-danger">Delete</a>
+                @endif
             </td>
         </tr>
         @endforeach
